@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rubber Manager - Financial Management for Rubber Business</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Main Mobile App Shell -->
+  <div class="app-container">
+
+    <!-- Top Sticky Header -->
+    <header class="app-header">
+      <div class="header-brand" onclick="RubberApp.switchTab('home')">
+        <div class="brand-icon-wrap" aria-label="Rubber Manager Logo">
+          <!-- Custom Rubber Tree / Leaf Plant Inline SVG -->
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M12 22v-9"></path>
+            <path d="M12 13c-3-2-7-1.5-8 2 3.5 1.5 7 0 8-2z"></path>
+            <path d="M12 9c3-2 7-1.5 8 2-3.5 1.5-7 0-8-2z"></path>
+            <path d="M12 9V3"></path>
+            <path d="M12 3c-2.5 0-5 2-5 5 2.5 0 5-2 5-5z"></path>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-title">Rubber Manager</span>
+          <span class="brand-tag">Estate & Finance Hub</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Settings Button -->
+        <button class="icon-btn" onclick="RubberApp.openSettingsModal()" title="App Settings" aria-label="Settings">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+
+        <!-- User Profile Initials Pill -->
+        <div class="user-avatar" id="headerUserInitials" onclick="RubberApp.openSettingsModal()" title="Profile">
+          HA
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Sections / Router Views -->
+    <main class="main-content">
+
+      <!-- ============================================================
+           1. HOME / DASHBOARD VIEW
+           ============================================================ -->
+      <section id="view-home" class="view-section active">
+        <!-- User Greeting -->
+        <div class="user-greeting-card">
+          <div class="greeting-text-wrap">
+            <span class="greeting-time" id="dashGreeting">Good evening</span>
+            <span class="greeting-name" id="dashUserName">Hanan</span>
+            <span class="greeting-sub">Your rubber business at a glance.</span>
+          </div>
+        </div>
+
+        <!-- Main Emerald Summary Card: NET BALANCE -->
+        <div class="net-balance-card">
+          <div class="card-top-row">
+            <span class="net-badge" id="dashNetPeriodLabel">NET BALANCE · TODAY</span>
+            <select id="dashPeriodSelect" class="period-pill-select" aria-label="Select Period">
+              <option value="today" selected>Today</option>
+              <option value="this_month">This Month</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+
+          <div class="net-amount-display" id="dashNetAmount">
+            <span class="currency">₹</span>0
+          </div>
+
+          <div class="net-stats-grid">
+            <div class="net-stat-item">
+              <span class="net-stat-label">Income</span>
+              <span class="net-stat-value inc" id="dashHeroIncome">₹0</span>
+            </div>
+            <div class="net-stat-item">
+              <span class="net-stat-label">Expenses</span>
+              <span class="net-stat-value exp" id="dashHeroExpenses">₹0</span>
+            </div>
+            <div class="net-stat-item">
+              <span class="net-stat-label">Employee Pay</span>
+              <span class="net-stat-value emp" id="dashHeroEmployee">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overview Section (2x2 Grid) -->
+        <div>
+          <div class="section-header">
+            <span class="section-title">Overview</span>
+            <button class="section-link" onclick="RubberApp.switchTab('reports')">
+              Full Analytics
+              <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+
+          <div class="overview-grid">
+            <!-- Today's Income -->
+            <div class="overview-card" onclick="RubberApp.switchTab('income')">
+              <div class="overview-card-header">
+                <span class="overview-label">Today's Income</span>
+                <div class="overview-icon income-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="overview-value" id="dashOverviewIncome">₹0</div>
+            </div>
+
+            <!-- Today's Expenses -->
+            <div class="overview-card" onclick="RubberApp.switchTab('reports')">
+              <div class="overview-card-header">
+                <span class="overview-label">Today's Expenses</span>
+                <div class="overview-icon expense-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="overview-value" id="dashOverviewExpenses">₹0</div>
+            </div>
+
+            <!-- Employee Expenses -->
+            <div class="overview-card" onclick="RubberApp.switchTab('employees')">
+              <div class="overview-card-header">
+                <span class="overview-label">Employee Expenses</span>
+                <div class="overview-icon employee-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+              </div>
+              <div class="overview-value" id="dashOverviewEmpExp">₹0</div>
+            </div>
+
+            <!-- Number of Employees -->
+            <div class="overview-card" onclick="RubberApp.switchTab('employees')">
+              <div class="overview-card-header">
+                <span class="overview-label">Total Workers</span>
+                <div class="overview-icon count-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path></svg>
+                </div>
+              </div>
+              <div class="overview-value" id="dashOverviewEmpCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manage Expenses Section (4 Main Nav Cards) -->
+        <div>
+          <div class="section-header">
+            <span class="section-title">Manage Expenses</span>
+          </div>
+
+          <div class="manage-expenses-list">
+            <!-- 1. Employee Expenses -->
+            <div class="expense-nav-card" onclick="RubberApp.switchTab('employees')">
+              <div class="nav-card-icon emp-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="nav-card-content">
+                <div class="nav-card-title-row">
+                  <span class="nav-card-title">Employee Expenses</span>
+                  <span class="nav-card-amount" id="navCardEmpTotal">₹0</span>
+                </div>
+                <div class="nav-card-sub">Employees, payments and individual details</div>
+              </div>
+              <div class="nav-card-arrow">
+                <svg class="svg-icon" style="width:18px;height:18px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+
+            <!-- 2. Travel Expenses -->
+            <div class="expense-nav-card" onclick="RubberApp.switchTab('travel')">
+              <div class="nav-card-icon travel-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1L2 12v4a2 2 0 0 0 2 2h1"></path>
+                  <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                  <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="nav-card-content">
+                <div class="nav-card-title-row">
+                  <span class="nav-card-title">Travel Expenses</span>
+                  <span class="nav-card-amount" id="navCardTravelTotal">₹0</span>
+                </div>
+                <div class="nav-card-sub">Person, route and amount</div>
+              </div>
+              <div class="nav-card-arrow">
+                <svg class="svg-icon" style="width:18px;height:18px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+
+            <!-- 3. Goods / Purchases -->
+            <div class="expense-nav-card" onclick="RubberApp.switchTab('goods')">
+              <div class="nav-card-icon goods-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+              </div>
+              <div class="nav-card-content">
+                <div class="nav-card-title-row">
+                  <span class="nav-card-title">Goods / Purchases</span>
+                  <span class="nav-card-amount" id="navCardGoodsTotal">₹0</span>
+                </div>
+                <div class="nav-card-sub">Purchased goods and supplier payments</div>
+              </div>
+              <div class="nav-card-arrow">
+                <svg class="svg-icon" style="width:18px;height:18px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+
+            <!-- 4. Other Expenses -->
+            <div class="expense-nav-card" onclick="RubberApp.switchTab('other')">
+              <div class="nav-card-icon other-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <div class="nav-card-content">
+                <div class="nav-card-title-row">
+                  <span class="nav-card-title">Other Expenses</span>
+                  <span class="nav-card-amount" id="navCardOtherTotal">₹0</span>
+                </div>
+                <div class="nav-card-sub">Sugar, coffee powder, tea powder, LED bulbs, etc.</div>
+              </div>
+              <div class="nav-card-arrow">
+                <svg class="svg-icon" style="width:18px;height:18px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions Feed -->
+        <div>
+          <div class="section-header">
+            <span class="section-title">Recent Transactions</span>
+            <button class="section-link" onclick="RubberApp.switchTab('money')">
+              View All
+              <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+          <div id="dashRecentList" class="cards-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           2. EMPLOYEE EXPENSES VIEW
+           ============================================================ -->
+      <section id="view-employees" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Employee Expenses</span>
+            <span class="view-page-sub">No fixed salary — record actual payments.</span>
+          </div>
+          <button class="primary-btn" onclick="RubberApp.openAddEmployeeModal()">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Employee
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="employeeSearchInput" class="search-input" placeholder="Search workers by name or role...">
+          </div>
+        </div>
+
+        <!-- Employee Cards List -->
+        <div id="employeesListContainer" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           3. EMPLOYEE DETAILS VIEW
+           ============================================================ -->
+      <section id="view-employee-details" class="view-section">
+        <div class="view-header-bar">
+          <button class="secondary-btn" onclick="RubberApp.switchTab('employees')">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back
+          </button>
+          <button class="primary-btn" onclick="RubberApp.openAddEmpPaymentModal(activeEmployeeDetailId)">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Payment
+          </button>
+        </div>
+
+        <!-- Worker Profile Header Card -->
+        <div class="employee-profile-card">
+          <div class="profile-top">
+            <div class="profile-avatar-big" id="empDetailAvatar">RM</div>
+            <div class="profile-details">
+              <div class="profile-name" id="empDetailName">Rahman</div>
+              <span class="profile-role-tag" id="empDetailRole">Tapping Worker</span>
+              <div class="profile-phone" id="empDetailPhone">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                +91 98471 23456
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+              <span class="profile-stat-label">Total Paid</span>
+              <span class="profile-stat-value" id="empDetailTotalPaid" style="color:var(--emp-color)">₹0</span>
+            </div>
+            <div class="profile-stat-box">
+              <span class="profile-stat-label">Number of Payments</span>
+              <span class="profile-stat-value" id="empDetailCount">0 payments</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment History Header -->
+        <div class="section-header" style="margin-top:4px;">
+          <span class="section-title">Payment History</span>
+          <button class="section-link" style="color:var(--expense-color);" onclick="RubberApp.confirmDeleteCurrentEmployee()">
+            <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Remove Worker
+          </button>
+        </div>
+
+        <!-- History Records -->
+        <div id="empPaymentHistoryList" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           4. TRAVEL EXPENSES VIEW
+           ============================================================ -->
+      <section id="view-travel" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Travel Expenses</span>
+            <span class="view-page-sub">Total Spent: <b id="travelTotalHeader" style="color:var(--travel-color);">₹0</b></span>
+          </div>
+          <button class="primary-btn" onclick="RubberApp.openAddTravelModal()">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Travel
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="travelSearchInput" class="search-input" placeholder="Search person, road/route, purpose...">
+          </div>
+        </div>
+
+        <div id="travelListContainer" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           5. GOODS / PURCHASES VIEW
+           ============================================================ -->
+      <section id="view-goods" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Goods / Purchases</span>
+            <span class="view-page-sub">Total Spent: <b id="goodsTotalHeader" style="color:var(--goods-color);">₹0</b></span>
+          </div>
+          <button class="primary-btn" onclick="RubberApp.openAddGoodsModal()">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Purchase
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="goodsSearchInput" class="search-input" placeholder="Search items (Rubber acid, knives, cups, etc.)...">
+          </div>
+        </div>
+
+        <div id="goodsListContainer" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           6. OTHER EXPENSES VIEW
+           ============================================================ -->
+      <section id="view-other" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Other Expenses</span>
+            <span class="view-page-sub">Total Spent: <b id="otherTotalHeader" style="color:var(--other-color);">₹0</b></span>
+          </div>
+          <button class="primary-btn" onclick="RubberApp.openAddOtherModal()">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Expense
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="otherSearchInput" class="search-input" placeholder="Search general expenses...">
+          </div>
+          <select id="otherCategoryFilter" class="filter-select" aria-label="Filter Category">
+            <option value="">All Categories</option>
+            <option value="Refreshments">Refreshments</option>
+            <option value="Utilities">Utilities / Electric</option>
+            <option value="Cleaning">Cleaning & Shed</option>
+            <option value="Phone & Comm">Phone & Sim</option>
+            <option value="Repairs">Repairs & Maintenance</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+
+        <div id="otherListContainer" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           7. MONEY / INCOME VIEW
+           ============================================================ -->
+      <section id="view-money" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Business Income</span>
+            <span class="view-page-sub">Total Received: <b id="incomeTotalHeader" style="color:var(--income-color);">₹0</b></span>
+          </div>
+          <button class="primary-btn" onclick="RubberApp.openAddIncomeModal()">
+            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Income
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="incomeSearchInput" class="search-input" placeholder="Search buyers, rubber dealers, notes...">
+          </div>
+        </div>
+
+        <div id="incomeListContainer" class="cards-list"></div>
+      </section>
+
+      <!-- ============================================================
+           8. REPORTS VIEW
+           ============================================================ -->
+      <section id="view-reports" class="view-section">
+        <div class="view-header-bar">
+          <div class="view-title-block">
+            <span class="view-page-title">Reports & Summary</span>
+            <span class="view-page-sub">Financial performance & expense distribution</span>
+          </div>
+        </div>
+
+        <!-- Period Tabs -->
+        <div class="segment-tabs">
+          <button class="segment-tab report-tab-btn" data-period="today">Today</button>
+          <button class="segment-tab report-tab-btn" data-period="this_month">This Month</button>
+          <button class="segment-tab report-tab-btn active" data-period="all">All Time</button>
+        </div>
+
+        <!-- Report Main Hero -->
+        <div class="report-hero-card">
+          <div class="report-net-row">
+            <span class="report-net-title">Net Balance</span>
+            <span class="report-net-val profit" id="reportNetVal">₹0</span>
+          </div>
+
+          <div class="report-split-grid">
+            <div class="report-split-box">
+              <span class="report-split-label">Total Income</span>
+              <span class="report-split-value inc" id="reportTotalIncome">₹0</span>
+            </div>
+            <div class="report-split-box">
+              <span class="report-split-label">Total Expenses</span>
+              <span class="report-split-value exp" id="reportTotalExpenses">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expense Category Distribution Card -->
+        <div class="breakdown-card">
+          <span class="section-title">Expense Breakdown</span>
+
+          <!-- Multi-colored Distribution Bar -->
+          <div class="breakdown-bar-wrap">
+            <div id="barEmp" class="bar-segment bar-emp" style="width: 25%;"></div>
+            <div id="barTravel" class="bar-segment bar-travel" style="width: 25%;"></div>
+            <div id="barGoods" class="bar-segment bar-goods" style="width: 25%;"></div>
+            <div id="barOther" class="bar-segment bar-other" style="width: 25%;"></div>
+          </div>
+
+          <!-- Category Breakdown Rows -->
+          <div class="breakdown-row" onclick="RubberApp.switchTab('employees')">
+            <div class="breakdown-cat">
+              <span class="cat-dot" style="background:var(--emp-color);"></span>
+              <div>
+                <div class="breakdown-cat-name">Employee Expenses</div>
+                <div class="breakdown-cat-pct" id="reportEmpPct">0%</div>
+              </div>
+            </div>
+            <span class="breakdown-cat-val" id="reportEmpVal">₹0</span>
+          </div>
+
+          <div class="breakdown-row" onclick="RubberApp.switchTab('travel')">
+            <div class="breakdown-cat">
+              <span class="cat-dot" style="background:var(--travel-color);"></span>
+              <div>
+                <div class="breakdown-cat-name">Travel Expenses</div>
+                <div class="breakdown-cat-pct" id="reportTravelPct">0%</div>
+              </div>
+            </div>
+            <span class="breakdown-cat-val" id="reportTravelVal">₹0</span>
+          </div>
+
+          <div class="breakdown-row" onclick="RubberApp.switchTab('goods')">
+            <div class="breakdown-cat">
+              <span class="cat-dot" style="background:var(--goods-color);"></span>
+              <div>
+                <div class="breakdown-cat-name">Goods / Purchases</div>
+                <div class="breakdown-cat-pct" id="reportGoodsPct">0%</div>
+              </div>
+            </div>
+            <span class="breakdown-cat-val" id="reportGoodsVal">₹0</span>
+          </div>
+
+          <div class="breakdown-row" onclick="RubberApp.switchTab('other')">
+            <div class="breakdown-cat">
+              <span class="cat-dot" style="background:var(--other-color);"></span>
+              <div>
+                <div class="breakdown-cat-name">Other Expenses</div>
+                <div class="breakdown-cat-pct" id="reportOtherPct">0%</div>
+              </div>
+            </div>
+            <span class="breakdown-cat-val" id="reportOtherVal">₹0</span>
+          </div>
+        </div>
+
+        <!-- Employee Wise Payment Summary -->
+        <div>
+          <div class="section-header">
+            <span class="section-title">Employee-wise Breakdown</span>
+          </div>
+          <div id="reportEmployeeSummaryList" class="emp-leaderboard"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============================================================
+         FIXED BOTTOM NAVIGATION BAR
+         ============================================================ -->
+    <nav class="bottom-nav-container">
+      <!-- 1. Home -->
+      <button class="nav-item active" data-tab="home" onclick="RubberApp.switchTab('home')">
+        <svg class="svg-icon" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="nav-label">Home</span>
+      </button>
+
+      <!-- 2. Employees -->
+      <button class="nav-item" data-tab="employees" onclick="RubberApp.switchTab('employees')">
+        <svg class="svg-icon" viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span class="nav-label">Employees</span>
+      </button>
+
+      <!-- 3. Center Quick Add Button -->
+      <div class="center-add-btn-wrap">
+        <button class="center-add-btn" onclick="RubberApp.openQuickAdd()" aria-label="Quick Add Record">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 4. Money / Income -->
+      <button class="nav-item" data-tab="money" onclick="RubberApp.switchTab('money')">
+        <svg class="svg-icon" viewBox="0 0 24 24">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        <span class="nav-label">Money</span>
+      </button>
+
+      <!-- 5. Reports -->
+      <button class="nav-item" data-tab="reports" onclick="RubberApp.switchTab('reports')">
+        <svg class="svg-icon" viewBox="0 0 24 24">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span class="nav-label">Reports</span>
+      </button>
+    </nav>
+
+    <!-- ============================================================
+         MODAL / BOTTOM SHEET: QUICK ADD
+         ============================================================ -->
+    <div id="quickAddModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">Quick Add</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('quickAddModal')" aria-label="Close">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="sheet-body">
+          <div class="quick-add-grid">
+            <!-- 1. Employee Payment -->
+            <button class="quick-option-btn" onclick="RubberApp.closeModal('quickAddModal'); RubberApp.openAddEmpPaymentModal();">
+              <div class="quick-option-icon emp-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="quick-option-texts">
+                <div class="quick-option-title">Employee Payment</div>
+                <div class="quick-option-sub">Record actual cash/work payment to a worker</div>
+              </div>
+              <svg class="svg-icon" style="color:var(--text-subtle); width:16px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            <!-- 2. Travel Expense -->
+            <button class="quick-option-btn" onclick="RubberApp.closeModal('quickAddModal'); RubberApp.openAddTravelModal();">
+              <div class="quick-option-icon travel-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1L2 12v4a2 2 0 0 0 2 2h1"></path>
+                  <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                  <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="quick-option-texts">
+                <div class="quick-option-title">Travel Expense</div>
+                <div class="quick-option-sub">Route, road trip, and travel fare</div>
+              </div>
+              <svg class="svg-icon" style="color:var(--text-subtle); width:16px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            <!-- 3. Goods / Purchase -->
+            <button class="quick-option-btn" onclick="RubberApp.closeModal('quickAddModal'); RubberApp.openAddGoodsModal();">
+              <div class="quick-option-icon goods-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+              </div>
+              <div class="quick-option-texts">
+                <div class="quick-option-title">Goods / Purchase</div>
+                <div class="quick-option-sub">Rubber acid, knives, cups, tools, supplies</div>
+              </div>
+              <svg class="svg-icon" style="color:var(--text-subtle); width:16px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            <!-- 4. Other Expense -->
+            <button class="quick-option-btn" onclick="RubberApp.closeModal('quickAddModal'); RubberApp.openAddOtherModal();">
+              <div class="quick-option-icon other-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <div class="quick-option-texts">
+                <div class="quick-option-title">Other Expense</div>
+                <div class="quick-option-sub">Sugar, tea/coffee, bulbs, repairs, cleaning</div>
+              </div>
+              <svg class="svg-icon" style="color:var(--text-subtle); width:16px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            <!-- 5. Income -->
+            <button class="quick-option-btn" onclick="RubberApp.closeModal('quickAddModal'); RubberApp.openAddIncomeModal();">
+              <div class="quick-option-icon income-bg">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                  <line x1="12" y1="19" x2="12" y2="5"></line>
+                  <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+              </div>
+              <div class="quick-option-texts">
+                <div class="quick-option-title">Rubber Income</div>
+                <div class="quick-option-sub">Rubber sheet sale, field latex, cup lump</div>
+              </div>
+              <svg class="svg-icon" style="color:var(--text-subtle); width:16px;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD EMPLOYEE
+         ============================================================ -->
+    <div id="addEmployeeModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Add Employee</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addEmployeeModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addEmployeeForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="empFormName">Employee Name *</label>
+            <input type="text" id="empFormName" class="form-input" placeholder="e.g. Rahman, Basheer, Shameer" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="empFormRole">Work / Role</label>
+            <input type="text" id="empFormRole" class="form-input" placeholder="e.g. Tapping Worker, Latex Collector, Press Operator">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="empFormPhone">Phone Number</label>
+            <input type="tel" id="empFormPhone" class="form-input" placeholder="e.g. +91 98471 23456">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Worker</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD EMPLOYEE PAYMENT (No Fixed Salary)
+         ============================================================ -->
+    <div id="addPaymentModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Record Employee Payment</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addPaymentModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addPaymentForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="payFormEmpSelect">Employee *</label>
+            <select id="payFormEmpSelect" class="form-select" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="payFormAmount">Amount Paid *</label>
+            <div class="amount-input-wrap">
+              <span class="amount-currency-symbol">₹</span>
+              <input type="number" id="payFormAmount" class="form-input" placeholder="0" min="1" step="any" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="payFormDate">Date *</label>
+            <input type="date" id="payFormDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="payFormReason">Work / Reason</label>
+            <input type="text" id="payFormReason" class="form-input" placeholder="e.g. Morning tapping 500 trees, Roller press work">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="payFormNote">Note</label>
+            <input type="text" id="payFormNote" class="form-input" placeholder="e.g. Paid in cash, Advance adjustment">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Payment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD TRAVEL EXPENSE
+         ============================================================ -->
+    <div id="addTravelModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Add Travel Expense</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addTravelModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addTravelForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="travelFormPerson">Person Name *</label>
+            <input type="text" id="travelFormPerson" class="form-input" placeholder="e.g. Basheer, Rahman, Self" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="travelFormRoute">Route / Road *</label>
+            <input type="text" id="travelFormRoute" class="form-input" placeholder="e.g. Alanallur → Mannarkkad, Estate → Town" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="travelFormAmount">Amount *</label>
+            <div class="amount-input-wrap">
+              <span class="amount-currency-symbol">₹</span>
+              <input type="number" id="travelFormAmount" class="form-input" placeholder="0" min="1" step="any" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="travelFormDate">Date *</label>
+            <input type="date" id="travelFormDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="travelFormPurpose">Purpose</label>
+            <input type="text" id="travelFormPurpose" class="form-input" placeholder="e.g. Latex sample delivery, Knife sharpening">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="travelFormNote">Note</label>
+            <input type="text" id="travelFormNote" class="form-input" placeholder="e.g. Auto fare, Fuel, Toll">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Travel</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD GOODS / PURCHASE
+         ============================================================ -->
+    <div id="addGoodsModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Add Goods Purchase</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addGoodsModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addGoodsForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="goodsFormItem">Goods / Item Name *</label>
+            <input type="text" id="goodsFormItem" class="form-input" placeholder="e.g. Formic Acid, Tapping Knives, Rubber Cups" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goodsFormAmount">Amount *</label>
+            <div class="amount-input-wrap">
+              <span class="amount-currency-symbol">₹</span>
+              <input type="number" id="goodsFormAmount" class="form-input" placeholder="0" min="1" step="any" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goodsFormSupplier">Supplier / Store</label>
+            <input type="text" id="goodsFormSupplier" class="form-input" placeholder="e.g. Kisan Agri Agro, National Hardware">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goodsFormDate">Date *</label>
+            <input type="date" id="goodsFormDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goodsFormNote">Note</label>
+            <input type="text" id="goodsFormNote" class="form-input" placeholder="e.g. 2 Cans for latex coagulation, 500 cups">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Purchase</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD OTHER EXPENSE
+         ============================================================ -->
+    <div id="addOtherModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Add General Expense</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addOtherModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addOtherForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="otherFormItem">Expense Item *</label>
+            <input type="text" id="otherFormItem" class="form-input" placeholder="e.g. Sugar & Tea Powder, LED Bulbs, Floor Cleaner" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="otherFormCategory">Category</label>
+            <select id="otherFormCategory" class="form-select">
+              <option value="Refreshments">Refreshments (Tea / Coffee / Sugar / Snacks)</option>
+              <option value="Utilities">Utilities (LED bulbs, electricals, water)</option>
+              <option value="Cleaning">Cleaning & Maintenance</option>
+              <option value="Phone & Comm">Phone & Communication</option>
+              <option value="Repairs">Repairs & Machinery</option>
+              <option value="Stationery">Stationery & Office</option>
+              <option value="General" selected>General Expense</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="otherFormAmount">Amount *</label>
+            <div class="amount-input-wrap">
+              <span class="amount-currency-symbol">₹</span>
+              <input type="number" id="otherFormAmount" class="form-input" placeholder="0" min="1" step="any" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="otherFormDate">Date *</label>
+            <input type="date" id="otherFormDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="otherFormNote">Note</label>
+            <input type="text" id="otherFormNote" class="form-input" placeholder="e.g. Weekly workers tea, Smoke house lighting">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Expense</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: ADD INCOME
+         ============================================================ -->
+    <div id="addIncomeModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">+ Record Rubber Income</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('addIncomeModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="addIncomeForm" class="sheet-body">
+          <div class="form-group">
+            <label class="form-label" for="incomeFormSource">Source / Buyer / Customer *</label>
+            <input type="text" id="incomeFormSource" class="form-input" placeholder="e.g. AP Rubber Traders, Kerala Latex Dealers" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="incomeFormAmount">Amount Received *</label>
+            <div class="amount-input-wrap">
+              <span class="amount-currency-symbol">₹</span>
+              <input type="number" id="incomeFormAmount" class="form-input" placeholder="0" min="1" step="any" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="incomeFormDate">Date *</label>
+            <input type="date" id="incomeFormDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="incomeFormNote">Note / Description</label>
+            <input type="text" id="incomeFormNote" class="form-input" placeholder="e.g. Grade 1 RSS sheets (85kg), Field latex payment">
+          </div>
+          <button type="submit" class="form-submit-btn">Save Income</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: SETTINGS & BACKUP
+         ============================================================ -->
+    <div id="settingsModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">App Settings & Data</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('settingsModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="sheet-body">
+          <form id="settingsForm" class="settings-section">
+            <div class="form-group">
+              <label class="form-label" for="settingsUserName">Owner Name</label>
+              <input type="text" id="settingsUserName" class="form-input" value="Hanan">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="settingsCurrency">Currency Symbol</label>
+              <input type="text" id="settingsCurrency" class="form-input" value="₹">
+            </div>
+            <button type="submit" class="primary-btn" style="width:100%; justify-content:center;">Save Profile</button>
+          </form>
+
+          <div class="settings-card" style="margin-top:8px;">
+            <span class="form-label">Data Backup & Restore</span>
+            <div style="display:flex; gap:10px;">
+              <button class="secondary-btn" style="flex:1; justify-content:center;" onclick="RubberApp.exportBackup()">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export JSON
+              </button>
+              <label class="secondary-btn" style="flex:1; justify-content:center; cursor:pointer;">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Import JSON
+                <input type="file" accept=".json" style="display:none;" onchange="RubberApp.importBackup(event)">
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <span class="form-label">Data Management</span>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <button class="secondary-btn" style="justify-content:center;" onclick="RubberApp.resetData()">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                Restore Realistic Sample Data
+              </button>
+              <button class="secondary-btn" style="justify-content:center; color:var(--expense-color); border-color:var(--expense-border);" onclick="RubberApp.clearData()">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Erase All Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: CONFIRM ACTION DIALOG
+         ============================================================ -->
+    <div id="confirmModal" class="modal-backdrop">
+      <div class="confirm-box">
+        <div class="confirm-icon-wrap">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="confirm-title" id="confirmTitle">Confirm Delete</div>
+        <div class="confirm-desc" id="confirmDesc">Are you sure you want to proceed?</div>
+        <div class="confirm-actions">
+          <button id="confirmCancelBtn" class="confirm-btn-cancel">Cancel</button>
+          <button id="confirmActionBtn" class="confirm-btn-delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
