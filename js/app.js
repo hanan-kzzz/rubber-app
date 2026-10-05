@@ -1433,6 +1433,9 @@
 
       // Initial Render
       switchTab('home');
+
+      // Initialize PWA Lifecycle
+      initPWA();
     },
 
     switchTab: switchTab,
@@ -1483,6 +1486,14 @@
       if (currInput) currInput.value = (appState.user && appState.user.currency) || '₹';
       openModal('settingsModal');
     },
+    openInstallModal: function () {
+      updateInstallUI();
+      openModal('installAppModal');
+    },
+
+    // PWA Install Triggers
+    installAppPrompt: installAppPrompt,
+    dismissInstallBanner: dismissInstallBanner,
 
     closeModal: closeModal,
     closeAllModals: closeAllModals,
@@ -1519,6 +1530,144 @@
     resetData: resetToSampleData,
     clearData: clearAllData
   };
+
+  // ==========================================================================
+  // PWA (Progressive Web App) Install Management
+  // ==========================================================================
+  let deferredInstallPrompt = null;
+  const PWA_DISMISSED_KEY = 'rubber_manager_pwa_dismissed';
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }
+
+  function isStandalone() {
+    return (window.navigator.standalone === true) || (window.matchMedia('(display-mode: standalone)').matches);
+  }
+
+  function initPWA() {
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('ServiceWorker registered:', reg.scope))
+          .catch((err) => console.log('ServiceWorker error:', err));
+      });
+    }
+
+    // Capture Native Install Prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      updateInstallUI();
+    });
+
+    // App installed event
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      hideInstallBanner();
+      showToast('Rubber Manager installed successfully!', 'success');
+      const headerBtn = document.getElementById('headerInstallBtn');
+      if (headerBtn) headerBtn.style.display = 'none';
+      const settingsBtn = document.getElementById('settingsInstallRow');
+      if (settingsBtn) settingsBtn.style.display = 'none';
+    });
+
+    // Handle initial UI state
+    if (!isStandalone()) {
+      updateInstallUI();
+      // Show install banner on first few visits
+      if (!localStorage.getItem(PWA_DISMISSED_KEY)) {
+        setTimeout(() => {
+          showInstallBanner();
+        }, 2000);
+      }
+    }
+  }
+
+  function updateInstallUI() {
+    const isInstalled = isStandalone();
+    const headerBtn = document.getElementById('headerInstallBtn');
+    const settingsBtn = document.getElementById('settingsInstallRow');
+    const iosGuide = document.getElementById('iosInstallGuide');
+    const androidGuide = document.getElementById('androidInstallGuide');
+    const btnText = document.getElementById('installBtnText');
+    const nativeBtn = document.getElementById('nativeInstallActionBtn');
+
+    if (isInstalled) {
+      if (headerBtn) headerBtn.style.display = 'none';
+      if (settingsBtn) settingsBtn.style.display = 'none';
+      return;
+    }
+
+    if (headerBtn) headerBtn.style.display = 'inline-flex';
+    if (settingsBtn) settingsBtn.style.display = 'flex';
+
+    if (deferredInstallPrompt) {
+      if (btnText) btnText.textContent = 'Install App on Home Screen';
+      if (iosGuide) iosGuide.style.display = 'none';
+      if (androidGuide) androidGuide.style.display = 'none';
+    } else if (isIOS()) {
+      if (iosGuide) iosGuide.style.display = 'flex';
+      if (androidGuide) androidGuide.style.display = 'none';
+      if (nativeBtn) nativeBtn.style.display = 'none';
+    } else {
+      // Browser without native prompt (e.g. LAN IP / HTTP)
+      if (iosGuide) iosGuide.style.display = 'none';
+      if (androidGuide) androidGuide.style.display = 'flex';
+      if (btnText) btnText.textContent = 'Tap ⋮ (Menu) → “Install app”';
+    }
+  }
+
+  function showInstallBanner() {
+    if (isStandalone()) return;
+    const banner = document.getElementById('floatingInstallBanner');
+    if (banner) {
+      banner.classList.add('show');
+    }
+  }
+
+  function hideInstallBanner() {
+    const banner = document.getElementById('floatingInstallBanner');
+    if (banner) {
+      banner.classList.remove('show');
+    }
+  }
+
+  function dismissInstallBanner() {
+    hideInstallBanner();
+    localStorage.setItem(PWA_DISMISSED_KEY, 'true');
+  }
+
+  function installAppPrompt() {
+    if (deferredInstallPrompt) {
+      hideInstallBanner();
+      closeModal('installAppModal');
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          showToast('Installing Rubber Manager...');
+        }
+        deferredInstallPrompt = null;
+        updateInstallUI();
+      });
+    } else if (isIOS()) {
+      hideInstallBanner();
+      openModal('installAppModal');
+      const iosGuide = document.getElementById('iosInstallGuide');
+      if (iosGuide) iosGuide.style.display = 'flex';
+    } else {
+      // Show Android / Chrome guidance
+      hideInstallBanner();
+      openModal('installAppModal');
+      const androidGuide = document.getElementById('androidInstallGuide');
+      if (androidGuide) {
+        androidGuide.style.display = 'flex';
+        androidGuide.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      showToast('Tap the 3 dots (⋮) menu in Chrome → "Install app"', 'success');
+    }
+  }
 
   // Run on DOM Ready
   document.addEventListener('DOMContentLoaded', function () {

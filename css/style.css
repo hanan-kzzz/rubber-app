@@ -1417,9 +1417,13 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.6);
+  height: 100dvh;
+  background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 90;
@@ -1429,6 +1433,7 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  touch-action: none;
 }
 
 .modal-backdrop.active {
@@ -1441,14 +1446,16 @@ body {
   max-width: 480px;
   background: var(--bg-card);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  padding: 16px 20px 28px 20px;
+  padding: 12px 18px max(18px, env(safe-area-inset-bottom, 18px)) 18px;
   box-shadow: var(--shadow-lg);
   transform: translateY(100%);
   transition: transform var(--transition-smooth);
-  max-height: 90vh;
+  max-height: 82vh;
+  max-height: 82dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .modal-backdrop.active .bottom-sheet {
@@ -1460,7 +1467,7 @@ body {
   height: 4px;
   background: var(--border-light);
   border-radius: var(--radius-pill);
-  margin: 0 auto 14px auto;
+  margin: 0 auto 10px auto;
   flex-shrink: 0;
 }
 
@@ -1468,12 +1475,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
 .sheet-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.3px;
@@ -1482,22 +1489,25 @@ body {
 .sheet-close-btn {
   background: var(--bg-card-subtle);
   border: none;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .sheet-body {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-bottom: 12px;
+  gap: 12px;
+  padding-bottom: 28px;
+  flex: 1;
 }
 
 /* Quick Add Options Menu */
@@ -1617,8 +1627,9 @@ body {
   color: var(--text-white);
   border: none;
   border-radius: var(--radius-md);
-  height: 48px;
-  font-size: 15px;
+  min-height: 46px;
+  padding: 0 16px;
+  font-size: 14px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -1626,8 +1637,9 @@ body {
   gap: 8px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-  margin-top: 8px;
+  margin-top: 6px;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .form-submit-btn:active {
@@ -1779,4 +1791,245 @@ body {
   .overview-value {
     font-size: 16px;
   }
+}
+
+/* ==========================================================================
+   PWA Mobile Install Popup & Banner Styles
+   ========================================================================== */
+.install-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  color: var(--primary-700);
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.install-header-pill:active {
+  transform: scale(0.95);
+  background: var(--primary-100);
+}
+
+/* Floating Bottom Install Prompt Banner */
+.install-floating-banner {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-height) + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  width: calc(100% - 32px);
+  max-width: 448px;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2), 0 2px 8px rgba(5, 150, 105, 0.15);
+  border: 1.5px solid var(--primary-200);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.install-floating-banner.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.install-banner-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.3);
+  flex-shrink: 0;
+}
+
+.install-banner-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.install-banner-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.install-banner-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.install-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.install-banner-btn {
+  background: var(--primary-600);
+  color: #ffffff;
+  border: none;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+}
+
+.install-banner-btn:active {
+  background: var(--primary-700);
+  transform: scale(0.96);
+}
+
+.install-banner-close {
+  background: var(--bg-card-subtle);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Dedicated Install Modal / Bottom Sheet Detailed UI */
+.install-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 2px 0 10px 0;
+}
+
+.install-app-badge-large {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3);
+}
+
+.install-modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+
+.install-modal-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.35;
+}
+
+.install-perks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  background: var(--bg-card-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.install-perk-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.install-perk-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--primary-100);
+  color: var(--primary-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Browser Specific Step-by-Step Box (Android/Chrome & iOS) */
+.browser-install-guide {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  background: #ecfdf5;
+  border: 1.5px solid var(--primary-300);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  text-align: left;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.browser-guide-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--primary-900);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.browser-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.browser-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-600);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.browser-step-text {
+  flex: 1;
+}
+
+.browser-inline-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  stroke: var(--primary-700);
+  stroke-width: 2.2;
 }

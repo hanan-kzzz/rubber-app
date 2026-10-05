@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#047857">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rubber Manager">
   <title>Rubber Manager - Financial Management for Rubber Business</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -31,6 +38,16 @@
       </div>
 
       <div class="header-actions">
+        <!-- Install App Header Pill -->
+        <button id="headerInstallBtn" class="install-header-pill" onclick="RubberApp.openInstallModal()" title="Install Mobile App">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Install App
+        </button>
+
         <!-- Settings Button -->
         <button class="icon-btn" onclick="RubberApp.openSettingsModal()" title="App Settings" aria-label="Settings">
           <svg class="svg-icon" viewBox="0 0 24 24">
@@ -970,7 +987,20 @@
             <button type="submit" class="primary-btn" style="width:100%; justify-content:center;">Save Profile</button>
           </form>
 
-          <div class="settings-card" style="margin-top:8px;">
+          <div class="settings-card" id="settingsInstallRow" style="background:var(--primary-50); border:1px solid var(--primary-200);">
+            <div class="settings-row">
+              <div>
+                <div style="font-size:14px; font-weight:700; color:var(--primary-900);">Install Mobile App</div>
+                <div style="font-size:12px; color:var(--primary-700);">Add to home screen for offline use</div>
+              </div>
+              <button class="primary-btn" onclick="RubberApp.openInstallModal()">
+                <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Install
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-card" style="margin-top:4px;">
             <span class="form-label">Data Backup & Restore</span>
             <div style="display:flex; gap:10px;">
               <button class="secondary-btn" style="flex:1; justify-content:center;" onclick="RubberApp.exportBackup()">
@@ -999,6 +1029,112 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: INSTALL APP BOTTOM SHEET (PWA)
+         ============================================================ -->
+    <div id="installAppModal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-header">
+          <span class="sheet-title">Install Rubber Manager</span>
+          <button class="sheet-close-btn" onclick="RubberApp.closeModal('installAppModal')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="sheet-body">
+          <div class="install-modal-content">
+            <img src="icons/icon-192.png" alt="Rubber Manager App Icon" class="install-app-badge-large">
+            <div>
+              <div class="install-modal-title">Get the Mobile App</div>
+              <div class="install-modal-sub">Add Rubber Manager to your phone’s home screen for fast 1-tap offline estate accounting.</div>
+            </div>
+
+            <!-- Perk Highlights -->
+            <div class="install-perks-list">
+              <div class="install-perk-item">
+                <div class="install-perk-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div>Instant launch with 100% offline estate sync</div>
+              </div>
+              <div class="install-perk-item">
+                <div class="install-perk-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <div>Full-screen native mobile application feel</div>
+              </div>
+              <div class="install-perk-item">
+                <div class="install-perk-icon">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div>No internet or data required in plantation</div>
+              </div>
+            </div>
+
+            <!-- Interactive Install Action Button -->
+            <button id="nativeInstallActionBtn" class="form-submit-btn" style="width:100%; margin-top:2px;" onclick="RubberApp.installAppPrompt()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span id="installBtnText">Install App on Home Screen</span>
+            </button>
+
+            <!-- Android / Chrome / Mobile Browser Step-by-Step Instructions -->
+            <div id="androidInstallGuide" class="browser-install-guide">
+              <div class="browser-guide-title">
+                <svg class="browser-inline-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Easy 1-Tap Home Screen Setup:
+              </div>
+              <div class="browser-step">
+                <div class="browser-step-num">1</div>
+                <div class="browser-step-text">In the Chrome prompt, tap <b>“Create shortcut”</b> (or 3-dots ⋮ → <b>“Add to Home screen”</b>).</div>
+              </div>
+              <div class="browser-step">
+                <div class="browser-step-num">2</div>
+                <div class="browser-step-text">The <b>Rubber Manager</b> icon is placed directly on your phone’s home screen with 100% offline data!</div>
+              </div>
+            </div>
+
+            <!-- iOS Safari Step-by-Step Instructions -->
+            <div id="iosInstallGuide" class="browser-install-guide">
+              <div class="browser-guide-title">
+                <svg class="browser-inline-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                How to install on iPhone / iPad (Safari):
+              </div>
+              <div class="browser-step">
+                <div class="browser-step-num">1</div>
+                <div class="browser-step-text">Tap the <b>Share</b> button <svg class="browser-inline-icon" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg> in Safari's bottom toolbar.</div>
+              </div>
+              <div class="browser-step">
+                <div class="browser-step-num">2</div>
+                <div class="browser-step-text">Scroll down and tap <b>“Add to Home Screen”</b> <svg class="browser-inline-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>.</div>
+              </div>
+              <div class="browser-step">
+                <div class="browser-step-num">3</div>
+                <div class="browser-step-text">Tap <b>“Add”</b> at the top right to finish.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         FLOATING BOTTOM INSTALL PROMPT BANNER (POPUP UI)
+         ============================================================ -->
+    <div id="floatingInstallBanner" class="install-floating-banner">
+      <img src="icons/icon-192.png" alt="App Icon" class="install-banner-icon">
+      <div class="install-banner-content">
+        <div class="install-banner-title">Install Rubber Manager</div>
+        <div class="install-banner-sub">Add to home screen for offline use</div>
+      </div>
+      <div class="install-banner-actions">
+        <button class="install-banner-btn" onclick="RubberApp.installAppPrompt()">Install</button>
+        <button class="install-banner-close" onclick="RubberApp.dismissInstallBanner()" title="Dismiss" aria-label="Dismiss">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
     </div>
 

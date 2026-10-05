@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#047857" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a7f3d0" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGrad)" />
+
+  <!-- Subtle glow inner circle -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3" />
+
+  <!-- Rubber Leaf / Tree Icon Group -->
+  <g filter="url(#dropShadow)">
+    <!-- Main stem / trunk -->
+    <path d="M256 420 L256 220" stroke="#a7f3d0" stroke-width="26" stroke-linecap="round" />
+    
+    <!-- Top Central Leaf -->
+    <path d="M256 220 C210 160 210 100 256 80 C302 100 302 160 256 220 Z" fill="url(#leafGrad)" />
+    
+    <!-- Left Leaf -->
+    <path d="M256 280 C170 240 100 260 80 320 C140 350 210 320 256 280 Z" fill="#6ee7b7" />
+    
+    <!-- Right Leaf -->
+    <path d="M256 230 C342 190 412 210 432 270 C372 300 302 270 256 230 Z" fill="#34d399" />
+    
+    <!-- latex collection diagonal cut / drip accents -->
+    <path d="M220 350 C235 340 277 325 292 315" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.85" />
+    <circle cx="292" cy="340" r="8" fill="#ffffff" opacity="0.9" />
+  </g>
+</svg>
