@@ -1576,12 +1576,10 @@
     // Handle initial UI state
     if (!isStandalone()) {
       updateInstallUI();
-      // Show install banner on first few visits
-      if (!localStorage.getItem(PWA_DISMISSED_KEY)) {
-        setTimeout(() => {
-          showInstallBanner();
-        }, 2000);
-      }
+      // Smooth auto-display floating banner for fast installation
+      setTimeout(() => {
+        showInstallBanner();
+      }, 1200);
     }
   }
 

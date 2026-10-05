@@ -40,7 +40,8 @@
       <div class="header-actions">
         <!-- Install App Header Pill -->
         <button id="headerInstallBtn" class="install-header-pill" onclick="RubberApp.openInstallModal()" title="Install Mobile App">
-          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24">
+          <span class="pulse-dot"></span>
+          <svg class="svg-icon" style="width:13px;height:13px;" viewBox="0 0 24 24">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -1127,8 +1128,12 @@
     <div id="floatingInstallBanner" class="install-floating-banner">
       <img src="icons/icon-192.png" alt="App Icon" class="install-banner-icon">
       <div class="install-banner-content">
+        <span class="install-banner-badge">
+          <span class="pulse-dot" style="width:5px;height:5px;"></span>
+          Mobile App
+        </span>
         <div class="install-banner-title">Install Rubber Manager</div>
-        <div class="install-banner-sub">Add to home screen for offline use</div>
+        <div class="install-banner-sub">1-Tap offline estate tracker</div>
       </div>
       <div class="install-banner-actions">
         <button class="install-banner-btn" onclick="RubberApp.installAppPrompt()">Install</button>

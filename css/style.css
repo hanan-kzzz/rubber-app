@@ -1794,46 +1794,64 @@ body {
 }
 
 /* ==========================================================================
-   PWA Mobile Install Popup & Banner Styles
+   PWA Mobile Install Popup & Banner Styles (Enhanced Modern Fintech Design)
    ========================================================================== */
 .install-header-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  background: var(--primary-50);
-  border: 1px solid var(--primary-200);
-  color: var(--primary-700);
-  padding: 5px 10px;
+  gap: 6px;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border: 1.5px solid var(--primary-300);
+  color: var(--primary-800);
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
   transition: all var(--transition-fast);
 }
 
 .install-header-pill:active {
-  transform: scale(0.95);
-  background: var(--primary-100);
+  transform: scale(0.94);
+  background: var(--primary-200);
 }
 
-/* Floating Bottom Install Prompt Banner */
+.install-header-pill .pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary-500);
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Floating Bottom Install Prompt Banner (Ultra Sleek) */
 .install-floating-banner {
   position: fixed;
   bottom: calc(var(--bottom-nav-height) + 12px);
   left: 50%;
-  transform: translateX(-50%) translateY(120%);
-  width: calc(100% - 32px);
-  max-width: 448px;
-  background: #ffffff;
+  transform: translateX(-50%) translateY(140%);
+  width: calc(100% - 28px);
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-lg);
   padding: 12px 14px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2), 0 2px 8px rgba(5, 150, 105, 0.15);
-  border: 1.5px solid var(--primary-200);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(5, 150, 105, 0.2);
+  border: 1.5px solid var(--primary-300);
   z-index: 60;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   opacity: 0;
   pointer-events: none;
 }
@@ -1845,10 +1863,10 @@ body {
 }
 
 .install-banner-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.3);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.35);
   flex-shrink: 0;
 }
 
@@ -1857,8 +1875,19 @@ body {
   min-width: 0;
 }
 
+.install-banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary-700);
+}
+
 .install-banner-title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--text-main);
   line-height: 1.2;
@@ -1870,7 +1899,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .install-banner-actions {
@@ -1880,21 +1909,21 @@ body {
 }
 
 .install-banner-btn {
-  background: var(--primary-600);
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
   color: #ffffff;
   border: none;
-  padding: 7px 12px;
-  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.35);
+  transition: transform var(--transition-fast);
 }
 
 .install-banner-btn:active {
-  background: var(--primary-700);
-  transform: scale(0.96);
+  transform: scale(0.95);
 }
 
 .install-banner-close {
@@ -1908,6 +1937,11 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.install-banner-close:active {
+  background: #e2e8f0;
 }
 
 /* Dedicated Install Modal / Bottom Sheet Detailed UI */
@@ -1916,29 +1950,37 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 10px;
-  padding: 2px 0 10px 0;
+  gap: 12px;
+  padding: 2px 0 8px 0;
+}
+
+.install-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
 }
 
 .install-app-badge-large {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3);
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(5, 150, 105, 0.35);
 }
 
 .install-modal-title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--text-main);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
 }
 
 .install-modal-sub {
   font-size: 12px;
   color: var(--text-muted);
   max-width: 320px;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .install-perks-list {
@@ -1947,24 +1989,25 @@ body {
   gap: 8px;
   width: 100%;
   background: var(--bg-card-subtle);
-  border-radius: var(--radius-md);
-  padding: 10px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
   text-align: left;
 }
 
 .install-perk-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-main);
 }
 
 .install-perk-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
   background: var(--primary-100);
   color: var(--primary-700);
   display: flex;
@@ -1982,7 +2025,7 @@ body {
   background: #ecfdf5;
   border: 1.5px solid var(--primary-300);
   border-radius: var(--radius-md);
-  padding: 12px;
+  padding: 12px 14px;
   text-align: left;
   animation: fadeIn 0.2s ease-out;
 }
@@ -2003,7 +2046,7 @@ body {
   gap: 8px;
   font-size: 12px;
   color: var(--text-main);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .browser-step-num {
