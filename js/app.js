@@ -1536,13 +1536,19 @@
   // ==========================================================================
   let deferredInstallPrompt = null;
   const PWA_DISMISSED_KEY = 'rubber_manager_pwa_dismissed';
+  const PWA_INSTALLED_KEY = 'rubber_manager_installed_flag';
 
   function isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   }
 
   function isStandalone() {
-    return (window.navigator.standalone === true) || (window.matchMedia('(display-mode: standalone)').matches);
+    return (window.navigator.standalone === true) || 
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+      (window.matchMedia && window.matchMedia('(display-mode: fullscreen)').matches) ||
+      (window.matchMedia && window.matchMedia('(display-mode: minimal-ui)').matches) ||
+      (document.referrer && document.referrer.startsWith('android-app://')) ||
+      (localStorage.getItem(PWA_INSTALLED_KEY) === 'true');
   }
 
   function initPWA() {
@@ -1557,6 +1563,7 @@
 
     // Capture Native Install Prompt
     window.addEventListener('beforeinstallprompt', (e) => {
+      if (isStandalone()) return;
       e.preventDefault();
       deferredInstallPrompt = e;
       updateInstallUI();
@@ -1565,12 +1572,10 @@
     // App installed event
     window.addEventListener('appinstalled', () => {
       deferredInstallPrompt = null;
+      localStorage.setItem(PWA_INSTALLED_KEY, 'true');
       hideInstallBanner();
+      updateInstallUI();
       showToast('Rubber Manager installed successfully!', 'success');
-      const headerBtn = document.getElementById('headerInstallBtn');
-      if (headerBtn) headerBtn.style.display = 'none';
-      const settingsBtn = document.getElementById('settingsInstallRow');
-      if (settingsBtn) settingsBtn.style.display = 'none';
     });
 
     // Handle initial UI state
@@ -1578,8 +1583,12 @@
       updateInstallUI();
       // Smooth auto-display floating banner for fast installation
       setTimeout(() => {
-        showInstallBanner();
+        if (!isStandalone()) {
+          showInstallBanner();
+        }
       }, 1200);
+    } else {
+      updateInstallUI();
     }
   }
 
@@ -1595,6 +1604,7 @@
     if (isInstalled) {
       if (headerBtn) headerBtn.style.display = 'none';
       if (settingsBtn) settingsBtn.style.display = 'none';
+      hideInstallBanner();
       return;
     }
 

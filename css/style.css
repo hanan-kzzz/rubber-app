@@ -1793,9 +1793,17 @@ body {
   }
 }
 
-/* ==========================================================================
-   PWA Mobile Install Popup & Banner Styles (Enhanced Modern Fintech Design)
-   ========================================================================== */
+/* Hide all install elements when app is installed/running in standalone mode */
+@media all and (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  #headerInstallBtn,
+  .install-header-pill,
+  #floatingInstallBanner,
+  .install-floating-banner,
+  #settingsInstallRow {
+    display: none !important;
+  }
+}
+
 .install-header-pill {
   display: inline-flex;
   align-items: center;
