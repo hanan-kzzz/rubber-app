@@ -1,8 +1,8 @@
 /* ==========================================================================
-   Rubber Manager - Service Worker for Offline PWA Support
+   Rubber Manager - Service Worker for Offline PWA Support (v2)
    ========================================================================== */
 
-const CACHE_NAME = 'rubber-manager-cache-v1';
+const CACHE_NAME = 'rubber-manager-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -17,10 +17,11 @@ const ASSETS_TO_CACHE = [
 
 // Install Event - cache assets
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
@@ -39,18 +40,25 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event - Cache first, network fallback
+// Fetch Event - Stale-while-revalidate & Cache First
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
+        // Fetch fresh copy in background to keep cache updated
+        fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+        }).catch(() => {});
         return cachedResponse;
       }
+
       return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+        if (!networkResponse || networkResponse.status !== 200) {
           return networkResponse;
         }
         const responseToCache = networkResponse.clone();
@@ -59,9 +67,8 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
-        // Fallback to index.html for navigation requests if offline
         if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+          return caches.match('./index.html') || caches.match('index.html');
         }
       });
     })
